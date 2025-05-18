@@ -1,4 +1,4 @@
-# =< CLI Panda
+# =<  CLI Panda
 
 An intelligent terminal assistant powered by LM Studio that brings AI capabilities directly to your command line.
 
