@@ -1,16 +1,16 @@
-# =<  CLI Panda
+# ~% CLI@Panda
 
 An intelligent terminal assistant powered by LM Studio that brings AI capabilities directly to your command line.
 
 ## Features
 
-- >à Context-aware responses with 40k token window
-- =­ Visible reasoning process
+- >Ã  Context-aware responses with 40k token window
+- =Â­ Visible reasoning process
 - =' Terminal command assistance
-- =Ý Code generation and debugging
-- <¨ Rich terminal formatting with colors
-- =¾ Persistent conversation memory
-- =€ Fast local AI inference via LM Studio
+- =Ã Code generation and debugging
+- <Â¨ Rich terminal formatting with colors
+- =Â¾ Persistent conversation memory
+- =â‚¬ Fast local AI inference via LM Studio
 
 ## Installation
 
