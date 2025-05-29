@@ -1,6 +1,10 @@
-# CLI Panda 🐼 - AI-Powered Terminal Assistant
+# CLI Panda AI Terminal 🐼
 
-> Inteligentny asystent terminalowy z inline AI, smart autocomplete i warp-style workflow
+> TypeScript/Node.js terminal assistant with inline AI help powered by LM Studio
+
+## Overview
+
+This is the main interactive terminal component of CLI Panda. For Python/MLX components (RAG, distributed memory), see `../lbrxchat/` and `../PostDevAi/`.
 
 ## Features
 

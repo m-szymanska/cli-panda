@@ -151,6 +151,20 @@ check_shell() {
     return 0
 }
 
+# Check for uv (optional but recommended)
+check_uv() {
+    echo -e "\n${BLUE}Checking for uv (Python package manager)...${NC}"
+    
+    if command -v uv &> /dev/null; then
+        echo -e "${GREEN}✅ uv $(uv --version 2>/dev/null | head -1) detected${NC}"
+        echo -e "${YELLOW}ℹ️  For Python components, we recommend using uv${NC}"
+    else
+        echo -e "${YELLOW}ℹ️  uv not found (optional)${NC}"
+        echo -e "For faster Python package management, install uv:"
+        echo -e "  ${BLUE}curl -LsSf https://astral.sh/uv/install.sh | sh${NC}"
+    fi
+}
+
 # Setup ZSH integration
 setup_zsh() {
     if ! check_shell; then
@@ -255,6 +269,7 @@ main() {
     check_requirements
     check_node
     check_npm
+    check_uv
     check_lmstudio || true
     
     # Install
@@ -283,6 +298,11 @@ main() {
         echo -e "  • Load the ${BLUE}qwen3-8b${NC} model"
         echo -e "  • Start the local server"
     fi
+    
+    echo -e "\n${BLUE}For Python/MLX components:${NC}"
+    echo -e "  • Check out ${BLUE}lbrxchat/${NC} for RAG system"
+    echo -e "  • Check out ${BLUE}PostDevAi/${NC} for distributed memory"
+    echo -e "  • Use ${BLUE}uv${NC} for fast Python package management"
     
     echo -e "\n${GREEN}Happy coding with CLI Panda! 🐼${NC}"
 }
