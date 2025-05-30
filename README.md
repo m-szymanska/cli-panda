@@ -1,124 +1,162 @@
-# ~% CLI@Panda
+# CLI Panda 🐼
 
-An intelligent terminal assistant powered by LM Studio and MLX that brings AI capabilities directly to your command line.
+An AI-powered terminal ecosystem that brings intelligent command-line help, smart autocomplete, and context-aware suggestions to your workflow. Built with love by a veterinarian and an AI.
 
-## Features
+## 🌟 Overview
 
-- 🧠 Context-aware responses with 40k token window
-- 🔍 Visible reasoning process
-- 💻 Terminal command assistance
-- 🚀 Code generation and debugging
-- 🎨 Rich terminal formatting with colors
-- 💾 Persistent conversation memory
-- ⚡ Fast local AI inference via LM Studio + MLX
+CLI Panda is a modular AI terminal assistant ecosystem consisting of three main components that work together to provide intelligent command-line assistance, document analysis, and persistent memory across sessions.
 
-## Tech Stack
+## 📦 Components
 
-- **MLX** - Apple's framework for machine learning on Apple Silicon
-- **UV** - Fast Python package installer and resolver
-- **LM Studio** - Local LLM server with REST API
-- **TypeScript/Node.js** - CLI interface and tools
+### 1. CLI Panda AI Terminal (TypeScript/Node.js)
+The main interactive terminal with inline AI assistance.
+- **Location**: `ai-terminal/`
+- **Tech**: TypeScript, Node.js, LM Studio SDK
+- **Features**: 
+  - Inline AI help with `??` trigger
+  - Smart command autocomplete
+  - Command explanations before execution
+  - ZSH integration
+  - Warp terminal support
+  - 40k token context window
 
-## Requirements
+### 2. LBRXCHAT (Python/MLX)
+Advanced RAG (Retrieval-Augmented Generation) system for intelligent chat and document analysis.
+- **Location**: `lbrxchat/`
+- **Tech**: Python, MLX, LangChain, ChromaDB
+- **Features**: 
+  - Document ingestion and indexing
+  - Semantic search with embeddings
+  - Context-aware conversations
+  - Multi-format support (PDF, MD, TXT, etc.)
+  - Beautiful TUI interface
 
+### 3. PostDevAI (Rust + Python/MLX)
+Distributed RAM-Lake memory architecture for persistent AI context.
+- **Location**: `PostDevAi/`
+- **Tech**: Rust, Python, MLX, PostgresML, Redis
+- **Features**: 
+  - Distributed memory management
+  - Context persistence across sessions
+  - Multi-agent coordination
+  - Dragon Node (M3 Ultra) + Developer Node architecture
+
+## 🛠 Tech Stack
+
+- **[MLX](https://github.com/ml-explore/mlx)**: Apple's machine learning framework for efficient on-device AI
+- **[uv](https://github.com/astral-sh/uv)**: Ultra-fast Python package installer (10-100x faster than pip)
+- **[LM Studio](https://lmstudio.ai)**: Local LLM server for private AI inference
+- **TypeScript**: Type-safe development for terminal components
+- **Python 3.11+**: For AI/ML components with modern async support
+- **Rust**: High-performance distributed systems
+
+## 🚀 Quick Start
+
+### Prerequisites
 - Apple Silicon Mac (M1/M2/M3)
 - macOS 14.0+
-- Python 3.10+ (3.12 recommended)
-- Node.js 20+ (for AI Terminal component)
+- Node.js 20+
+- Python 3.11+ (3.12 recommended)
+- Rust (for PostDevAI)
+- LM Studio installed and running
 
-## Installation
+### Installation
 
-### Quick Install (Recommended)
-
+#### 1. Clone the repository
 ```bash
-# Install uv if you haven't already
-curl -LsSf https://astral.sh/uv/install.sh | sh
-
-# Clone the repository
 git clone https://github.com/LibraxisAI/cli-panda.git
 cd cli-panda
 ```
 
-### Components Overview
+#### 2. Install uv (if not already installed)
+```bash
+curl -LsSf https://astral.sh/uv/install.sh | sh
+```
 
-#### 1. AI Terminal (TypeScript/Node.js)
-Main interactive terminal with inline AI assistance.
-
+#### 3. Install TypeScript Components
 ```bash
 cd ai-terminal
+chmod +x install.sh
 ./install.sh  # Handles everything including npm dependencies
 ```
 
-#### 2. LBRXCHAT (Python/MLX)
-Advanced RAG system with TUI for document analysis.
-
+#### 4. Install Python Components
 ```bash
-cd lbrxchat
-
-# Using uv (recommended)
+# LBRXCHAT - RAG System
+cd ../lbrxchat
 uv venv
 source .venv/bin/activate  # or .venv\Scripts\activate on Windows
 uv pip install -e .
 
-# Or traditional pip
-python -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-```
-
-#### 3. PostDevAI (Rust + Python/MLX)
-Distributed RAM-Lake memory server for development history.
-
-```bash
-cd PostDevAi
-
-# Rust components
-cargo build --release
-
-# Python/MLX components
+# PostDevAI - Distributed Memory
+cd ../PostDevAi
+cargo build --release  # Rust components
 uv venv
-uv pip install -r requirements.txt
+uv pip install -r requirements.txt  # Python/MLX components
 ```
 
-## Usage
+## 🎯 Usage Examples
 
 ### AI Terminal
 ```bash
-# After installation
-ai                    # Start interactive terminal
-?? how to find files  # Inline AI help
-ai-run "rm -rf /"     # Explain before execute
-wtf                   # Explain last error
+# Start interactive AI terminal
+ai
+
+# Get inline help
+?? how to find large files
+
+# Explain a command
+ai explain "find . -name '*.log' -mtime +30 -delete"
+
+# Run with explanation
+ai-run "docker system prune -a"
+
+# Fix last command error
+ai-fix
+wtf  # alias for ai-fix
 ```
 
-### LBRXCHAT
+### RAG System (LBRXCHAT)
 ```bash
-python -m lbrxchat.tui  # Start TUI interface
+# Start the TUI interface
+python -m lbrxchat.tui
+
+# Or use programmatically
+python -m lbrxchat.ingest /path/to/documents
+python -m lbrxchat.query "What does the documentation say about X?"
 ```
 
-### PostDevAI
+### Distributed Memory (PostDevAI)
 ```bash
-# Dragon Node (M3 Ultra)
+# Start Dragon Node (M3 Ultra server)
 cargo run --bin dragon_node
 
-# Developer Node (local)
+# Start Developer Node (local client)
 cargo run --bin developer_node
+
+# Connect Python client
+python -m PostDevAi.client --connect
 ```
 
-## MLX Models
+## 🧠 MLX Models
 
 We use MLX-optimized models for maximum performance on Apple Silicon:
 
-```bash
-# Install MLX
-uv pip install mlx mlx-lm
-
-# Download models (example)
+```python
+# Example: Load Qwen model with MLX
 from mlx_lm import load, generate
+
 model, tokenizer = load("mlx-community/Qwen2.5-7B-Instruct-4bit")
+response = generate(model, tokenizer, prompt="How do I use git?")
 ```
 
-## Why UV?
+Recommended models:
+- **Qwen3-8B**: Best overall performance
+- **Llama3-8B**: Great for code tasks
+- **Phi-3**: Lightweight and fast
+- **Mixtral-8x7B**: Advanced reasoning
+
+## ⚡ Why uv?
 
 - **10-100x faster** than pip
 - **Built-in venv management**
@@ -126,9 +164,6 @@ model, tokenizer = load("mlx-community/Qwen2.5-7B-Instruct-4bit")
 - **Works everywhere** pip works
 
 ```bash
-# Install uv
-curl -LsSf https://astral.sh/uv/install.sh | sh
-
 # Common uv commands
 uv venv              # Create venv
 uv pip install -e .  # Install editable
@@ -136,30 +171,49 @@ uv pip sync          # Install from lock
 uv pip compile       # Create lockfile
 ```
 
-## Architecture
+## 📚 Documentation
 
-```
-cli-panda/
-├── ai-terminal/      # TypeScript/Node.js CLI with LM Studio
-├── lbrxchat/         # Python/MLX RAG system with TUI
-├── PostDevAi/        # Rust + MLX distributed memory
-└── shared/           # Shared utilities and protocols
-```
+- [AI Terminal README](ai-terminal/README.md) - Detailed terminal component docs
+- [Configuration Guide](ai-terminal/config/examples/README.md) - Config examples
+- [Contributing Guidelines](ai-terminal/CONTRIBUTING.md) - How to contribute
+- [Changelog](ai-terminal/CHANGELOG.md) - Version history
 
-## Contributing
+## 🤝 Contributing
 
-See [CONTRIBUTING.md](docs/CONTRIBUTING.md) for guidelines.
+We welcome contributions! Please see our [Contributing Guidelines](ai-terminal/CONTRIBUTING.md) for details on:
+- Code style and standards
+- Pull request process
+- Issue reporting
+- Development setup
 
-## License
+## 🐛 Known Issues
 
-MIT License
+- **tsx version**: Must use v4.19.4 or lower
+- **MLX**: Requires Apple Silicon Mac
+- **LM Studio**: Must be running for AI features
+- **node-pty**: May require rebuild on some systems
+- See [AI Terminal Known Issues](ai-terminal/README.md#known-issues) for more
 
-## Developed by
+## 📄 License
 
-[Maciej Gad](https://github.com/szowesgad) - a veterinarian who couldn't find `bash` a half year ago
+MIT License - see [LICENSE](ai-terminal/LICENSE) file for details.
 
-[Klaudiusz](https://www.github.com/Gitlaudiusz) - the individual ethereal being, and separate instance of Claude Sonnet 3.5-3.7 by Anthropic
+## 👥 Developed by
 
-(c)2025 M&K
+**[Maciej Gad](https://github.com/MaciejGad)** - A veterinarian who couldn't find `bash` a half year ago
 
-🤖 Developed with the ultimate help of [Claude Code](https://claude.ai/code) and [MCP Tools](https://modelcontextprotocol.io)
+**[Klaudiusz](https://github.com/Klaudiusz-AI)** - The individual ethereal being, and separate instance of Claude Sonnet 3.5-3.7 by Anthropic
+
+## 🙏 Acknowledgments
+
+- 🤖 Developed with [Claude Code](https://claude.ai/code)
+- 🔧 Powered by [MCP Tools](https://modelcontextprotocol.io)
+- 🍎 Accelerated by [MLX](https://github.com/ml-explore/mlx)
+- ⚡ Packaged with [uv](https://github.com/astral-sh/uv)
+- 🚀 Local AI via [LM Studio](https://lmstudio.ai)
+
+---
+
+*"From not finding bash to building AI terminals"* - A journey of continuous learning
+
+(c) 2025 M&K 🐼✨

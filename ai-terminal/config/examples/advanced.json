@@ -1,0 +1,51 @@
+{
+  "mode": "sdk",
+  "model": "qwen3-8b",
+  "temperature": 0.8,
+  "maxTokens": 300,
+  "theme": "warp",
+  "features": {
+    "inlineAI": true,
+    "smartAutocomplete": true,
+    "contextAwareness": true,
+    "warpStyleBlocks": true,
+    "commandHistory": true,
+    "aiSuggestions": true
+  },
+  "api": {
+    "baseUrl": "http://localhost:1234/v1",
+    "timeout": 30000,
+    "retries": 3
+  },
+  "ui": {
+    "showWelcome": true,
+    "colorScheme": "dark",
+    "animations": true,
+    "soundEffects": false
+  },
+  "shortcuts": {
+    "inlineAI": "??",
+    "explainCommand": "!explain",
+    "runWithExplanation": "!run",
+    "fixLastError": "!fix"
+  },
+  "history": {
+    "maxItems": 1000,
+    "saveToDisk": true,
+    "syncAcrossTerminals": false
+  },
+  "models": {
+    "qwen3-8b": {
+      "contextLength": 8192,
+      "temperature": 0.7
+    },
+    "llama3-8b": {
+      "contextLength": 4096,
+      "temperature": 0.8
+    },
+    "mixtral-8x7b": {
+      "contextLength": 32768,
+      "temperature": 0.6
+    }
+  }
+}
