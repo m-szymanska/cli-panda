@@ -1,6 +1,8 @@
 #!/bin/bash
 
 # CLI Panda AI Terminal Installer
+# Version: 1.0.1
+# Last Updated: 2025-05-29
 # Safe for non-programmers!
 
 echo "🐼 CLI Panda AI Terminal Installer"
@@ -117,7 +119,7 @@ install_deps() {
     echo -e "\n${BLUE}Installing dependencies...${NC}"
     echo -e "${YELLOW}This may take a few minutes...${NC}"
     
-    if ! npm install --production 2>&1 | while read -r line; do
+    if ! npm install 2>&1 | while read -r line; do
         echo -n "."
     done; then
         echo ""
@@ -257,6 +259,13 @@ EOF
 
 # Main installation
 main() {
+    # Check for dry-run flag
+    DRY_RUN=false
+    if [[ "$1" == "--dry-run" ]]; then
+        DRY_RUN=true
+        echo -e "${BLUE}🏃 Running in DRY-RUN mode (no changes will be made)${NC}\n"
+    fi
+    
     echo -e "${YELLOW}This installer will:${NC}"
     echo -e "  • Check system requirements"
     echo -e "  • Install necessary files"
@@ -271,6 +280,16 @@ main() {
     check_npm
     check_uv
     check_lmstudio || true
+    
+    if [ "$DRY_RUN" = true ]; then
+        echo -e "\n${BLUE}Would perform:${NC}"
+        echo -e "  • Install npm dependencies"
+        echo -e "  • Setup ZSH integration in ~/.zsh/cli-panda"
+        echo -e "  • Create config at ~/.config/cli-panda/config.json"
+        echo -e "  • Create launcher at ~/.local/bin/cli-panda"
+        echo -e "\n${GREEN}✅ Dry-run complete (no changes made)${NC}"
+        exit 0
+    fi
     
     # Install
     install_deps

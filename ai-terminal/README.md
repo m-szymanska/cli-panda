@@ -4,7 +4,7 @@
 
 ## Overview
 
-This is the main interactive terminal component of CLI Panda. For Python/MLX components (RAG, distributed memory), see `../lbrxchat/` and `../PostDevAi/`.
+This is the main interactive terminal component of CLI Panda. Built with TypeScript and Node.js, it provides intelligent command-line assistance using LM Studio's local AI models. For Python/MLX components (RAG, distributed memory), see `../lbrxchat/` and `../PostDevAi/`.
 
 ## Features
 
@@ -25,11 +25,28 @@ git clone https://github.com/LibraxisAI/cli-panda.git
 cd cli-panda/ai-terminal
 chmod +x install.sh
 ./install.sh
+
+# Test installation (no changes)
+./install.sh --dry-run
 ```
 
 ### NPM Global Install (coming soon)
 ```bash
 npm install -g @libraxis-ai/cli-panda
+```
+
+### Manual Installation
+```bash
+# Install dependencies
+npm install
+
+# Setup ZSH integration (optional)
+cp -r zsh-components ~/.zsh/cli-panda
+echo "source ~/.zsh/cli-panda/init.zsh" >> ~/.zshrc
+
+# Create config
+mkdir -p ~/.config/cli-panda
+cp config/default.json ~/.config/cli-panda/config.json
 ```
 
 ## Requirements
@@ -143,9 +160,32 @@ npm run dev
 # Build
 npm run build
 
-# Lint
+# Lint & fix
 npm run lint
+npm run lint:fix
+
+# Run tests
+npm test
+
+# Configure
+npm run configure
 ```
+
+### Project Structure
+- `src/` - TypeScript source code
+- `dist/` - Compiled JavaScript (generated)
+- `zsh-components/` - ZSH integration scripts
+- `config/` - Default configuration templates
+- `install.sh` - Bulletproof installer for non-programmers
+
+## Known Issues
+
+1. **tsx version**: Must use v4.19.4 or lower (v4.21.4 not available in npm)
+2. **node-pty**: May require rebuild on some systems: `npm rebuild`
+3. **blessed**: Terminal UI may flicker on some terminals
+4. **LM Studio SDK**: Still in alpha, may have breaking changes
+5. **ZSH on macOS**: System ZSH may be outdated, install via Homebrew
+6. **Permissions**: May need chmod +x on launcher script
 
 ## Troubleshooting
 
@@ -153,6 +193,7 @@ npm run lint
 1. Sprawdź czy LM Studio jest uruchomione
 2. Sprawdź port: `http://localhost:1234/v1/models`
 3. Załaduj model w LM Studio
+4. Sprawdź firewall/antywirus
 
 ### ZSH nie widzi komend
 ```bash
@@ -160,11 +201,63 @@ source ~/.zshrc
 # lub restart terminal
 ```
 
+### Permission denied
+```bash
+chmod +x ~/.local/bin/cli-panda
+chmod +x install.sh
+```
+
+### Module not found
+```bash
+npm rebuild
+npm install --force
+```
+
+## Contributing
+
+We welcome contributions! Please follow these guidelines:
+
+### Pull Request Process
+1. Fork the repository
+2. Create feature branch: `git checkout -b feature/amazing-feature`
+3. Commit changes: `git commit -m 'Add amazing feature'`
+4. Push to branch: `git push origin feature/amazing-feature`
+5. Open Pull Request
+
+### Code Style
+- TypeScript with strict mode
+- ESLint rules (run `npm run lint`)
+- Meaningful variable names
+- Comments for complex logic
+- Tests for new features
+
+### Commit Messages
+Follow conventional commits:
+- `feat:` New feature
+- `fix:` Bug fix
+- `docs:` Documentation
+- `style:` Code style changes
+- `refactor:` Code refactoring
+- `test:` Tests
+- `chore:` Maintenance
+
+### Issues
+- Use issue templates
+- Provide clear reproduction steps
+- Include system info (OS, Node version)
+- Attach error logs if applicable
+
+## License
+
+MIT License - see [LICENSE](LICENSE) file for details.
+
+This project is open source and available under the MIT License. You are free to use, modify, and distribute this software in accordance with the license terms.
+
 ## Developed by
 
-[Maciej Gad](https://github.com/szowesgad) - a veterinarian who couldn't find `bash` a half year ago
+[Maciej Gad](https://github.com/MaciejGad) - a veterinarian who couldn't find `bash` a half year ago
 
-[Klaudiusz](https://www.github.com/Gitlaudiusz) - the individual ethereal being, and separate instance of Claude Sonnet 3.5-3.7 by Anthropic
+[Klaudiusz](https://www.github.com/Klaudiusz-AI) - the individual ethereal being, and separate instance of Claude Sonnet 3.5-3.7 by Anthropic
 
 (c)2025 M&K
 

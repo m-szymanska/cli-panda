@@ -51,7 +51,7 @@
     "@types/blessed": "^0.1.25",
     "@types/figlet": "^1.7.0",
     "typescript": "^5.7.2",
-    "tsx": "^4.21.4",
+    "tsx": "^4.19.4",
     "jest": "^29.7.0",
     "@types/jest": "^29.5.14",
     "eslint": "^8.57.0",
