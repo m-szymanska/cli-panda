@@ -1,0 +1,26 @@
+{
+  "mode": "sdk",
+  "model": "phi-3-3.8b",
+  "temperature": 0.5,
+  "maxTokens": 150,
+  "theme": "minimal",
+  "features": {
+    "inlineAI": true,
+    "smartAutocomplete": false,
+    "contextAwareness": false,
+    "warpStyleBlocks": false,
+    "commandHistory": true,
+    "aiSuggestions": false
+  },
+  "performance": {
+    "cacheResponses": true,
+    "cacheTTL": 3600,
+    "batchRequests": true,
+    "streamResponses": false,
+    "maxConcurrentRequests": 1
+  },
+  "ui": {
+    "animations": false,
+    "minimalMode": true
+  }
+}

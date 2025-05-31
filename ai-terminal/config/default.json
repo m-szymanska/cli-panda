@@ -1,0 +1,29 @@
+{
+  "lmstudio": {
+    "baseUrl": "ws://localhost:1234",
+    "model": "qwen3-8b",
+    "temperature": 0.7,
+    "maxTokens": 200,
+    "retryAttempts": 3,
+    "retryDelay": 1000
+  },
+  "terminal": {
+    "shell": "auto",
+    "scrollback": 10000,
+    "fontSize": 14,
+    "fontFamily": "Menlo, Monaco, 'Courier New', monospace"
+  },
+  "ai": {
+    "inlineTrigger": "??",
+    "autocompleteTrigger": "tab",
+    "contextWindowSize": 10,
+    "streamingEnabled": true
+  },
+  "appearance": {
+    "theme": "dark",
+    "borderColor": "cyan",
+    "focusColor": "green",
+    "statusBarBg": "blue",
+    "statusBarFg": "white"
+  }
+}
