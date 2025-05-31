@@ -5,3 +5,4 @@ pub mod models;
 pub mod ramlake;
 pub mod history;
 pub mod context;
+pub mod hybrid_memory;

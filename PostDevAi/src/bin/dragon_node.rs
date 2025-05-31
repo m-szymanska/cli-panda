@@ -9,7 +9,11 @@ use parking_lot::RwLock;
 use tracing::{info, error};
 use tracing_subscriber::{EnvFilter, fmt};
 
-use postdevai::core::memory::ramlake::{RamLake, RamLakeConfig, StoreAllocation};
+use postdevai::core::memory::{
+    HybridMemory, HybridConfig,
+    RamLakeConfig, StoreAllocation,
+    PersistentConfig
+};
 use postdevai::core::network::dragon_node_service::{DragonNodeServiceImpl, DragonNodeServiceServer};
 use postdevai::mlx::models::MLXModelManager;
 use postdevai::utils::config::{load_config, ModelConfig};
@@ -29,30 +33,48 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     
     let config = load_config(&config_path)?;
     
-    // Setup RAM-Lake
-    info!("Initializing RAM-Lake...");
+    // Setup Hybrid Memory System (RAM-Lake + Persistent Storage)
+    info!("Initializing Hybrid Memory System...");
     let ramdisk_path = PathBuf::from(&config.ramlake.path);
+    let persistent_path = PathBuf::from("/var/lib/postdevai/persistent");
     
-    let ramlake_config = RamLakeConfig {
-        max_size: config.ramlake.max_size,
-        backup_interval: config.ramlake.backup_interval,
-        backup_path: PathBuf::from(&config.ramlake.backup_path),
-        allocation: StoreAllocation {
-            vector_store: config.ramlake.allocation.vector_store,
-            code_store: config.ramlake.allocation.code_store,
-            history_store: config.ramlake.allocation.history_store,
-            metadata_store: config.ramlake.allocation.metadata_store,
+    // Create persistent storage directory if it doesn't exist
+    std::fs::create_dir_all(&persistent_path)?;
+    
+    let hybrid_config = HybridConfig {
+        ramlake_config: RamLakeConfig {
+            max_size: config.ramlake.max_size,
+            backup_interval: config.ramlake.backup_interval,
+            backup_path: PathBuf::from(&config.ramlake.backup_path),
+            allocation: StoreAllocation {
+                vector_store: config.ramlake.allocation.vector_store,
+                code_store: config.ramlake.allocation.code_store,
+                history_store: config.ramlake.allocation.history_store,
+                metadata_store: config.ramlake.allocation.metadata_store,
+            },
         },
+        persistent_config: PersistentConfig {
+            max_size: 1024 * 1024 * 1024 * 1024, // 1TB
+            compression: "zstd".to_string(),
+            cache_size_mb: 2048, // 2GB cache for Dragon Node
+            write_buffer_size_mb: 512,
+            enable_wal: true,
+        },
+        hot_retention_secs: 86400, // 24 hours
+        sync_interval_secs: 300, // 5 minutes
+        max_ram_entries: 10_000_000, // 10M entries max in RAM
     };
     
-    let ram_lake = RamLake::new(ramdisk_path, ramlake_config)
-        .map_err(|e| format!("Failed to initialize RAM-Lake: {}", e))?;
+    let hybrid_memory = HybridMemory::new(ramdisk_path, persistent_path, hybrid_config).await
+        .map_err(|e| format!("Failed to initialize Hybrid Memory: {}", e))?;
     
-    // Start RAM-Lake background tasks
-    ram_lake.start()
-        .map_err(|e| format!("Failed to start RAM-Lake background tasks: {}", e))?;
+    // Restore hot data from persistent storage
+    info!("Restoring hot data from persistent storage...");
+    let restored_count = hybrid_memory.restore_hot_data(Some(100_000)).await
+        .map_err(|e| format!("Failed to restore hot data: {}", e))?;
+    info!("Restored {} entries to RAM-Lake", restored_count);
     
-    let ram_lake = Arc::new(RwLock::new(ram_lake));
+    let hybrid_memory = Arc::new(RwLock::new(hybrid_memory));
     
     // Setup MLX Model Manager
     info!("Initializing MLX Model Manager...");
