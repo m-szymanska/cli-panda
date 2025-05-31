@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 #
 # CLI Panda Quick Installer
 # Usage: curl -LsSf https://raw.githubusercontent.com/LibraxisAI/cli-panda/main/install.sh | sh
@@ -15,7 +15,7 @@ NC='\033[0m'
 
 # ASCII Art
 print_banner() {
-    echo -e "${GREEN}"
+    printf "${GREEN}"
     echo "   _____ _      _____   _____                _       "
     echo "  / ____| |    |_   _| |  __ \              | |      "
     echo " | |    | |      | |   | |__) |_ _ _ __   __| | __ _ "
@@ -24,32 +24,35 @@ print_banner() {
     echo "  \_____|______|_____| |_|   \__,_|_| |_|\__,_|\__,_|"
     echo "                                                      "
     echo "                         🐼                           "
-    echo -e "${NC}"
+    printf "${NC}\n"
 }
 
 # Check OS
 check_os() {
-    if [[ "$OSTYPE" != "darwin"* ]]; then
-        echo -e "${RED}❌ Error: CLI Panda currently supports macOS only${NC}"
-        echo "Detected OS: $OSTYPE"
-        exit 1
-    fi
+    case "$OSTYPE" in
+        darwin*) ;;
+        *) 
+            printf "${RED}❌ Error: CLI Panda currently supports macOS only${NC}\\n"
+            echo "Detected OS: $OSTYPE"
+            exit 1
+            ;;
+    esac
 }
 
 # Check if already installed
 check_existing() {
     if [ -d "$HOME/cli-panda" ]; then
-        echo -e "${YELLOW}⚠️  CLI Panda directory already exists at ~/cli-panda${NC}"
+        printf "${YELLOW}⚠️  CLI Panda directory already exists at ~/cli-panda${NC}\n"
         echo -n "Do you want to update the existing installation? [y/N] "
         read -r response
-        if [[ ! "$response" =~ ^[Yy]$ ]]; then
+        if [ "$response" != "y" ] && [ "$response" != "Y" ]; then
             echo "Installation cancelled."
             exit 0
         fi
-        echo -e "${BLUE}Updating existing installation...${NC}"
+        printf "${BLUE}Updating existing installation...${NC}\n"
         cd "$HOME/cli-panda"
         git pull origin main || {
-            echo -e "${YELLOW}Git pull failed, continuing with existing files${NC}"
+            printf "${YELLOW}Git pull failed, continuing with existing files${NC}\n"
         }
         return 0
     fi
@@ -59,14 +62,14 @@ check_existing() {
 # Main installation
 main() {
     print_banner
-    echo -e "${BLUE}Installing CLI Panda...${NC}"
+    printf "${BLUE}Installing CLI Panda...${NC}\n"
     
     # Check OS
     check_os
     
     # Check Xcode Command Line Tools
     if ! xcode-select -p &> /dev/null; then
-        echo -e "${YELLOW}Xcode Command Line Tools required${NC}"
+        printf "${YELLOW}Xcode Command Line Tools required${NC}\n"
         echo "Please install with: xcode-select --install"
         echo "Then run this installer again."
         exit 1
@@ -78,33 +81,33 @@ main() {
         :
     else
         # Fresh installation
-        echo -e "${BLUE}Cloning CLI Panda repository...${NC}"
+        printf "${BLUE}Cloning CLI Panda repository...${NC}\n"
         cd "$HOME"
-        git clone https://github.com/LibraxisAI/cli-panda.git
+        git clone https://github.com/m-szymanska/cli-panda.git
         cd cli-panda
     fi
     
     # Make install script executable
     chmod +x install-all.sh
     
-    echo -e "${GREEN}✅ CLI Panda downloaded successfully!${NC}"
+    printf "${GREEN}✅ CLI Panda downloaded successfully!${NC}\n"
     echo
-    echo -e "${BLUE}To complete installation, run:${NC}"
+    printf "${BLUE}To complete installation, run:${NC}\n"
     echo
     echo "  cd ~/cli-panda"
     echo "  ./install-all.sh"
     echo
-    echo -e "${YELLOW}This will install all dependencies including:${NC}"
+    printf "${YELLOW}This will install all dependencies including:${NC}\n"
     echo "  • Homebrew (if not installed)"
     echo "  • uv (Python package manager)"
     echo "  • Node.js (for AI Terminal)"
     echo "  • Rust (for PostDevAI)"
     echo "  • All CLI Panda components"
     echo
-    echo -e "${BLUE}For step-by-step guide for beginners:${NC}"
+    printf "${BLUE}For step-by-step guide for beginners:${NC}\n"
     echo "  cat ~/cli-panda/INSTALL_FOR_HUMANS.md"
     echo
-    echo -e "${GREEN}Happy coding with CLI Panda! 🐼${NC}"
+    printf "${GREEN}Happy coding with CLI Panda! 🐼${NC}\n"
 }
 
 # Run main
