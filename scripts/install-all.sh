@@ -326,11 +326,14 @@ check_lm_studio() {
     else
         warning "LM Studio not detected"
         echo
-        echo "Please install LM Studio:"
+        echo -e "${YELLOW}⚠️  LM Studio setup needed:${NC}"
         echo "1. Download from https://lmstudio.ai"
         echo "2. Install and launch the app"
-        echo "3. Download a model (recommended: qwen3-8b)"
-        echo "4. Start the local server"
+        echo "3. Search and download: qwen2.5-7b-instruct"
+        echo "4. Load model (Chat tab → Select model)"
+        echo "5. Click 'Start Server' (important!)"
+        echo
+        echo -e "💡 For step-by-step guide: see ${BLUE}INSTALL_FOR_HUMANS.md${NC}"
     fi
 }
 

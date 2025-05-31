@@ -70,6 +70,8 @@ git clone https://github.com/LibraxisAI/cli-panda.git
 cd cli-panda
 ```
 
+> **👶 New to programming?** Check out [INSTALL_FOR_HUMANS.md](INSTALL_FOR_HUMANS.md) - step-by-step guide for non-programmers!
+
 #### 2. Install uv (REQUIRED!)
 ```bash
 # This is our Python gateway - don't skip this!
