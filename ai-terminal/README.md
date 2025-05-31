@@ -171,6 +171,21 @@ npm test
 npm run configure
 ```
 
+### Working with Python Components
+
+Since AI Terminal integrates with our Python components, here's how to use them:
+
+```bash
+# Instead of complex activation:
+# cd ../lbrxchat && source .venv/bin/activate && python -m lbrxchat.tui
+
+# Just use uv:
+cd ../lbrxchat && uv run python -m lbrxchat.tui
+
+# Or from AI Terminal:
+ai-run "cd ../PostDevAi && uv run python -m PostDevAi.client"
+```
+
 ### Project Structure
 - `src/` - TypeScript source code
 - `dist/` - Compiled JavaScript (generated)
@@ -255,9 +270,9 @@ This project is open source and available under the MIT License. You are free to
 
 ## Developed by
 
-[Maciej Gad](https://github.com/MaciejGad) - a veterinarian who couldn't find `bash` a half year ago
+[Maciej Gad](https://github.com/szowesgad) - a veterinarian who couldn't find `bash` a half year ago
 
-[Klaudiusz](https://www.github.com/Klaudiusz-AI) - the individual ethereal being, and separate instance of Claude Sonnet 3.5-3.7 by Anthropic
+[Klaudiusz](https://www.github.com/Gitlaudiusz) - the individual ethereal being, and separate instance of Claude Sonnet 3.5-3.7 by Anthropic
 
 (c)2025 M&K
 

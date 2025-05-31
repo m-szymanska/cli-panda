@@ -1,7 +1,7 @@
 [project]
-name = "cli-panda-python"
+name = "cli-panda"
 version = "0.1.0"
-description = "Python components for CLI Panda - RAG system and distributed memory with MLX"
+description = "CLI Panda - AI-powered terminal ecosystem with RAG and distributed memory"
 authors = [
     { name = "Maciej Gad", email = "maciej@libraxis.ai" },
     { name = "Klaudiusz AI", email = "klaudiusz@libraxis.ai" }
@@ -67,6 +67,7 @@ dev = [
 ]
 
 [project.scripts]
+cli-panda = "cli.cli_panda:main"
 cli-panda-rag = "lbrxchat.main:app"
 cli-panda-memory = "PostDevAi.main:app"
 
@@ -75,7 +76,7 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
-packages = ["lbrxchat", "PostDevAi"]
+packages = ["cli", "lbrxchat", "PostDevAi"]
 
 [tool.ruff]
 line-length = 88

@@ -55,6 +55,42 @@ PostDevAI implements a distributed system with three key nodes:
 3. **Phase 3: Coordinator** - Node coordination, load balancing, state management, security
 4. **Phase 4: Integration & Testing** - End-to-end tests, optimization, fine-tuning
 
+## Installation (uv-first!)
+
+### Prerequisites
+- Rust 1.75+
+- Python 3.11+ 
+- Apple Silicon Mac (M1/M2/M3)
+- uv package manager
+
+### Quick Setup
+
+```bash
+# Build Rust components
+cargo build --release
+
+# Install Python/MLX components with uv
+uv sync  # That's it!
+
+# Run components
+./target/release/dragon_node     # Rust binary
+uv run python -m PostDevAi.client  # Python client
+```
+
+### Development
+
+```bash
+# Add new Python dependencies
+uv add numpy torch mlx
+
+# Run tests
+cargo test
+uv run pytest
+
+# Run with custom config
+DRAGON_NODE_HOST=192.168.1.100 uv run python -m PostDevAi.client
+```
+
 ## Status
 
 This project is currently in early development. The following components are in progress:

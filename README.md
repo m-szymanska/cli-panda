@@ -43,12 +43,14 @@ Distributed RAM-Lake memory architecture for persistent AI context.
 
 ## 🛠 Tech Stack
 
+- **[uv](https://github.com/astral-sh/uv)**: Our PRIMARY Python package manager - 10-100x faster than pip! 🚀
 - **[MLX](https://github.com/ml-explore/mlx)**: Apple's machine learning framework for efficient on-device AI
-- **[uv](https://github.com/astral-sh/uv)**: Ultra-fast Python package installer (10-100x faster than pip)
 - **[LM Studio](https://lmstudio.ai)**: Local LLM server for private AI inference
 - **TypeScript**: Type-safe development for terminal components
 - **Python 3.11+**: For AI/ML components with modern async support
 - **Rust**: High-performance distributed systems
+
+> **Note**: We use `uv` exclusively for Python dependency management. No pip, no conda, no poetry - just pure uv speed!
 
 ## 🚀 Quick Start
 
@@ -68,9 +70,14 @@ git clone https://github.com/LibraxisAI/cli-panda.git
 cd cli-panda
 ```
 
-#### 2. Install uv (if not already installed)
+#### 2. Install uv (REQUIRED!)
 ```bash
+# This is our Python gateway - don't skip this!
 curl -LsSf https://astral.sh/uv/install.sh | sh
+source ~/.zshrc  # Reload shell
+
+# Verify it works
+uv --version
 ```
 
 #### 3. Install TypeScript Components
@@ -80,19 +87,16 @@ chmod +x install.sh
 ./install.sh  # Handles everything including npm dependencies
 ```
 
-#### 4. Install Python Components
+#### 4. Install Python Components (uv-powered!)
 ```bash
 # LBRXCHAT - RAG System
 cd ../lbrxchat
-uv venv
-source .venv/bin/activate  # or .venv\Scripts\activate on Windows
-uv pip install -e .
+uv sync  # That's it! No activation needed!
 
 # PostDevAI - Distributed Memory
 cd ../PostDevAi
 cargo build --release  # Rust components
-uv venv
-uv pip install -r requirements.txt  # Python/MLX components
+uv sync  # Python/MLX components
 ```
 
 ## 🎯 Usage Examples
@@ -118,25 +122,48 @@ wtf  # alias for ai-fix
 
 ### RAG System (LBRXCHAT)
 ```bash
-# Start the TUI interface
-python -m lbrxchat.tui
+# Start the TUI interface (no activation needed!)
+cd lbrxchat
+uv run python -m lbrxchat.tui
 
 # Or use programmatically
-python -m lbrxchat.ingest /path/to/documents
-python -m lbrxchat.query "What does the documentation say about X?"
+uv run python -m lbrxchat.ingest /path/to/documents
+uv run python -m lbrxchat.query "What does the documentation say about X?"
 ```
 
 ### Distributed Memory (PostDevAI)
 ```bash
+cd PostDevAi
+
 # Start Dragon Node (M3 Ultra server)
 cargo run --bin dragon_node
 
 # Start Developer Node (local client)
 cargo run --bin developer_node
 
-# Connect Python client
-python -m PostDevAi.client --connect
+# Connect Python client (no activation!)
+uv run python -m PostDevAi.client --connect
 ```
+
+### 🧪 Test Everything (Like lbrxWhisper!)
+```bash
+# Test all components at once
+./run.sh test
+
+# Or directly
+uv run python test_all.py
+```
+
+This will test:
+- ✅ uv installation
+- ✅ Node.js & npm 
+- ✅ LM Studio connection & models
+- ✅ Rust toolchain
+- ✅ All Python components
+- ✅ MLX availability
+- ✅ Live chat streaming
+
+Just like lbrxWhisper's amazing test suite!
 
 ## 🧠 MLX Models
 
@@ -156,20 +183,30 @@ Recommended models:
 - **Phi-3**: Lightweight and fast
 - **Mixtral-8x7B**: Advanced reasoning
 
-## ⚡ Why uv?
+## ⚡ Why uv? (Our Python Philosophy)
 
-- **10-100x faster** than pip
-- **Built-in venv management**
-- **Deterministic installs** with lockfiles
-- **Works everywhere** pip works
+We're **uv-first** because:
+- **10-100x faster** than pip - instant installs with cache
+- **No manual venv activation** - just `uv run`
+- **Automatic Python version management** - downloads if needed
+- **Reproducible everywhere** - lockfiles guarantee same versions
+- **One tool to rule them all** - replaces pip, poetry, pyenv, virtualenv
 
 ```bash
-# Common uv commands
-uv venv              # Create venv
-uv pip install -e .  # Install editable
-uv pip sync          # Install from lock
-uv pip compile       # Create lockfile
+# The uv way (what we use)
+uv init          # Start new project
+uv add numpy     # Add dependency
+uv sync          # Install everything
+uv run python    # Run with auto-sync
+
+# Forget about these old ways
+# python -m venv .venv ❌
+# source .venv/bin/activate ❌
+# pip install -r requirements.txt ❌
+# deactivate ❌
 ```
+
+See [UV_GUIDE.md](UV_GUIDE.md) for our complete uv workflow!
 
 ## 📚 Documentation
 
@@ -196,13 +233,13 @@ We welcome contributions! Please see our [Contributing Guidelines](ai-terminal/C
 
 ## 📄 License
 
-MIT License - see [LICENSE](ai-terminal/LICENSE) file for details.
+MIT License - see [LICENSE](LICENSE) file for details.
 
 ## 👥 Developed by
 
-**[Maciej Gad](https://github.com/MaciejGad)** - A veterinarian who couldn't find `bash` a half year ago
+**[Maciej Gad](https://github.com/szowesgad)** - A veterinarian who couldn't find `bash` a half year ago
 
-**[Klaudiusz](https://github.com/Klaudiusz-AI)** - The individual ethereal being, and separate instance of Claude Sonnet 3.5-3.7 by Anthropic
+**[Klaudiusz](https://github.com/Gitlaudiusz)** - The individual ethereal being, and separate instance of Claude Sonnet 3.5-3.7 by Anthropic
 
 ## 🙏 Acknowledgments
 

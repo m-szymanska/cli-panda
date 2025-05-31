@@ -30,20 +30,27 @@ LBRXCHAT is an advanced chatbot framework based on RAG (Retrieval-Augmented Gene
 - LM Studio with MLX models
 - 16GB+ RAM
 
-### Quick Installation
+### Quick Installation (uv-powered!)
 
 ```bash
-# Create virtual environment
-uv venv -p 3.12
+# Just sync - that's it!
+uv sync
 
-# Activate environment
-source .venv/bin/activate
+# No activation needed - run directly:
+uv run python -m lbrxchat.tui
+```
 
-# Install from project
-pip install -e .
+### Alternative: From requirements.txt
 
-# Or install dependencies
-uv pip install -r requirements.txt
+```bash
+# Initialize uv project
+uv init .
+
+# Add dependencies from requirements.txt
+uv add -r requirements.txt
+
+# Run without activation
+uv run python -m lbrxchat.tui
 ```
 
 ## 📊 Usage
@@ -51,7 +58,11 @@ uv pip install -r requirements.txt
 ### Basic Launch
 
 ```bash
-python -m lbrxchat.tui
+# With uv (no activation needed!)
+uv run python -m lbrxchat.tui
+
+# Or create an alias in your shell:
+alias lbrxchat='cd /path/to/lbrxchat && uv run python -m lbrxchat.tui'
 ```
 
 ### Custom Corpus Configuration
@@ -61,7 +72,7 @@ python -m lbrxchat.tui
 3. Build the index:
 
 ```bash
-python -m lbrxchat.tools.build_index --corpus_dir=corpus --output_dir=indexes
+uv run python -m lbrxchat.tools.build_index --corpus_dir=corpus --output_dir=indexes
 ```
 
 ### LLM Models
