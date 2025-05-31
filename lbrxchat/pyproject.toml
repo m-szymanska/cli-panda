@@ -1,7 +1,6 @@
 [build-system]
-name = "setuptools"
-version = "69.0.2"
-description-file = "README.md"
+requires = ["setuptools>=69.0.2", "wheel"]
+build-backend = "setuptools.build_meta"
 
 [project]
 name = "lbrxchat"

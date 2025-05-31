@@ -80,7 +80,7 @@ uv --version  # Should show 0.5.x or higher
 
 ```bash
 # Run the all-in-one installer
-./scripts/install.sh
+./install-all.sh
 ```
 
 ### Option B: Manual Installation

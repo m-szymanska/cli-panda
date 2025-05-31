@@ -180,26 +180,12 @@ install_uv() {
     success "uv $UV_VERSION installed - Python is now accessible!"
 }
 
-# Clone repository
-clone_repo() {
-    echo -e "\n${BLUE}Setting up CLI Panda...${NC}"
-    
-    if [ -d "cli-panda" ]; then
-        warning "cli-panda directory already exists"
-        read -p "Remove and re-clone? (y/N) " -n 1 -r
-        echo
-        if [[ $REPLY =~ ^[Yy]$ ]]; then
-            rm -rf cli-panda
-        else
-            cd cli-panda
-            git pull
-            return
-        fi
+# Verify we're in the right directory
+verify_directory() {
+    if [ ! -f "pyproject.toml" ] || [ ! -d "ai-terminal" ] || [ ! -d "lbrxchat" ]; then
+        error_exit "This script must be run from the CLI Panda root directory!\nPlease run: cd cli-panda && ./install-all.sh"
     fi
-    
-    git clone "$REPO_URL"
-    cd cli-panda
-    success "Repository cloned"
+    success "CLI Panda directory verified"
 }
 
 # Install AI Terminal
@@ -380,8 +366,8 @@ main() {
     install_dependencies
     install_uv
     
-    # Clone and enter repository
-    clone_repo
+    # Verify we're in the right directory
+    verify_directory
     
     # Install components
     install_ai_terminal

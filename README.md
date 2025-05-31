@@ -2,6 +2,14 @@
 
 An AI-powered terminal ecosystem that brings intelligent command-line help, smart autocomplete, and context-aware suggestions to your workflow. Built with love by a veterinarian and an AI.
 
+## 🚀 Quick Install
+
+```bash
+curl -LsSf https://raw.githubusercontent.com/LibraxisAI/cli-panda/main/install.sh | sh
+```
+
+Then follow the instructions to complete setup. For beginners, see [INSTALL_FOR_HUMANS.md](INSTALL_FOR_HUMANS.md).
+
 ## 🌟 Overview
 
 CLI Panda is a modular AI terminal assistant ecosystem consisting of three main components that work together to provide intelligent command-line assistance, document analysis, and persistent memory across sessions.

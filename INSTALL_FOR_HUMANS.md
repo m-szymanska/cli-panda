@@ -39,16 +39,14 @@ xcode-select --install
 W Terminalu skopiuj i wklej:
 
 ```bash
-curl -LsSf https://astral.sh/uv/install.sh | sh
-source ~/.zshrc
-git clone https://github.com/LibraxisAI/cli-panda.git
-cd cli-panda
+curl -LsSf https://raw.githubusercontent.com/LibraxisAI/cli-panda/main/install.sh | sh
+cd ~/cli-panda
 ```
 
 ### 2.2 Uruchom automatyczną instalację
 ```bash
-chmod +x scripts/install-all.sh
-./scripts/install-all.sh
+chmod +x install-all.sh
+./install-all.sh
 ```
 
 **To będzie trwało ~10 minut.** Pójdź zrób sobie kawę ☕
@@ -149,7 +147,7 @@ source ~/.zshrc
 
 ### "Permission denied"
 ```bash
-chmod +x scripts/install-all.sh
+chmod +x install-all.sh
 ```
 
 ### Dalej nie działa?
