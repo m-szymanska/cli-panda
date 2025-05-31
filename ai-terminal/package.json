@@ -15,7 +15,15 @@
     "lint": "eslint src/**/*.ts",
     "lint:fix": "eslint src/**/*.ts --fix"
   },
-  "keywords": ["terminal", "ai", "lmstudio", "cli", "autocomplete", "zsh", "warp"],
+  "keywords": [
+    "terminal",
+    "ai",
+    "lmstudio",
+    "cli",
+    "autocomplete",
+    "zsh",
+    "warp"
+  ],
   "author": "LIBRAXIS Team",
   "license": "MIT",
   "repository": {
@@ -36,29 +44,30 @@
   ],
   "dependencies": {
     "@lmstudio/sdk": "^0.1.0",
-    "node-pty": "^1.0.0",
     "blessed": "^0.1.81",
     "chalk": "^5.3.0",
-    "strip-ansi": "^7.1.0",
-    "figlet": "^1.8.0",
     "commander": "^12.1.0",
     "conf": "^13.0.1",
+    "figlet": "^1.8.0",
     "fuse.js": "^7.0.0",
-    "keypress": "^0.2.1"
+    "keypress": "^0.2.1",
+    "node-pty": "^1.0.0",
+    "strip-ansi": "^7.1.0",
+    "term.js": "^0.0.7"
   },
   "devDependencies": {
-    "@types/node": "^22.10.2",
     "@types/blessed": "^0.1.25",
     "@types/figlet": "^1.7.0",
-    "typescript": "^5.7.2",
-    "tsx": "^4.19.4",
-    "jest": "^29.7.0",
     "@types/jest": "^29.5.14",
-    "eslint": "^8.57.0",
+    "@types/node": "^22.10.2",
     "@typescript-eslint/eslint-plugin": "^7.0.0",
     "@typescript-eslint/parser": "^7.0.0",
+    "eslint": "^8.57.0",
+    "eslint-import-resolver-typescript": "^3.6.0",
     "eslint-plugin-import": "^2.29.0",
-    "eslint-import-resolver-typescript": "^3.6.0"
+    "jest": "^29.7.0",
+    "tsx": "^4.19.4",
+    "typescript": "^5.7.2"
   },
   "engines": {
     "node": ">=20.0.0"

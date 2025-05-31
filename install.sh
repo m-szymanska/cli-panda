@@ -1,7 +1,7 @@
 #!/bin/sh
 #
 # CLI Panda Quick Installer
-# Usage: curl -LsSf https://raw.githubusercontent.com/LibraxisAI/cli-panda/main/install.sh | sh
+# Usage: curl -LsSf https://raw.githubusercontent.com/m-szymanska/cli-panda/main/install.sh | sh
 #
 
 set -e

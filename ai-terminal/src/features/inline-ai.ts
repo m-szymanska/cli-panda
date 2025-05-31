@@ -1,4 +1,6 @@
 import { LMStudioService } from '../core/lmstudio';
+import { FileAnalyzer } from './file-analyzer';
+import { GitAssistant } from './git-assistant';
 import chalk from 'chalk';
 
 export interface InlineAIContext {
@@ -10,10 +12,14 @@ export interface InlineAIContext {
 
 export class InlineAI {
   private lmStudio: LMStudioService;
+  private fileAnalyzer: FileAnalyzer;
+  private gitAssistant: GitAssistant;
   private triggerPattern = /\?\?\s*(.*)$/;
   
   constructor(lmStudio: LMStudioService) {
     this.lmStudio = lmStudio;
+    this.fileAnalyzer = new FileAnalyzer(lmStudio);
+    this.gitAssistant = new GitAssistant(lmStudio);
   }
 
   isInlineQuery(input: string): boolean {
@@ -31,6 +37,11 @@ export class InlineAI {
   ): Promise<string> {
     const query = this.extractQuery(input);
     if (!query) return '';
+
+    // Check for special commands (file analysis, git operations)
+    if (await this.handleSpecialCommands(query, context)) {
+      return '';
+    }
 
     const contextPrompt = this.buildContextPrompt(query, context);
     
@@ -88,5 +99,66 @@ Focus on the specific question asked.`;
     );
     
     onToken('\n');
+  }
+
+  private async handleSpecialCommands(query: string, context: InlineAIContext): Promise<boolean> {
+    const lowerQuery = query.toLowerCase();
+    
+    // File analysis patterns
+    if (lowerQuery.startsWith('analyze ') || lowerQuery.startsWith('read ')) {
+      const filePath = query.split(' ').slice(1).join(' ');
+      if (filePath) {
+        const result = await this.fileAnalyzer.analyzeFile(filePath);
+        console.log(result);
+        return true;
+      }
+    }
+    
+    // List files
+    if (lowerQuery === 'list files' || lowerQuery === 'ls files' || lowerQuery === 'files') {
+      const result = await this.fileAnalyzer.listFiles();
+      console.log(result);
+      return true;
+    }
+    
+    // Suggest files based on intent
+    if (lowerQuery.startsWith('suggest files for ') || lowerQuery.startsWith('files for ')) {
+      const intent = query.replace(/^(suggest files for |files for )/i, '');
+      if (intent) {
+        const result = await this.fileAnalyzer.suggestFiles(intent);
+        console.log(result);
+        return true;
+      }
+    }
+    
+    // Git operations
+    if (lowerQuery === 'git status' || lowerQuery === 'git' || lowerQuery.startsWith('git ')) {
+      const result = await this.gitAssistant.analyzeChanges();
+      console.log(result);
+      return true;
+    }
+
+    if (lowerQuery === 'git recommendations' || lowerQuery === 'git help' || lowerQuery === 'git what should i do') {
+      const result = await this.gitAssistant.getRecommendations();
+      console.log(result);
+      return true;
+    }
+
+    if (lowerQuery === 'generate commit message' || lowerQuery === 'commit message' || lowerQuery === 'git commit message') {
+      const result = await this.gitAssistant.generateCommitMessage();
+      console.log(result);
+      return true;
+    }
+
+    // Auto-detect file paths in query
+    const words = query.split(' ');
+    const possibleFile = words.find(word => FileAnalyzer.isFilePath(word));
+    if (possibleFile) {
+      const result = await this.fileAnalyzer.analyzeFile(possibleFile, query);
+      console.log(result);
+      return true;
+    }
+    
+    return false;
   }
 }

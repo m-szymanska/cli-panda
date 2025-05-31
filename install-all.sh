@@ -14,7 +14,7 @@ MAGENTA='\033[0;35m'
 NC='\033[0m' # No Color
 
 # Configuration
-REPO_URL="https://github.com/LibraxisAI/cli-panda.git"
+REPO_URL="https://github.com/m-szymanska/cli-panda.git"
 MIN_NODE_VERSION="20"
 MIN_PYTHON_VERSION="3.11"
 
@@ -335,6 +335,9 @@ show_final_instructions() {
     echo "3. Test the installation:"
     echo "   - AI Terminal: ai"
     echo "   - Inline help: ?? how to use git"
+    echo "   - NEW: Execute commands: !ls -la"
+    echo "   - NEW: Analyze files: ?? analyze package.json"  
+    echo "   - NEW: Git assistance: ?? git status"
     echo "   - LBRXCHAT: cd lbrxchat && uv run python -m lbrxchat.tui"
     echo "   - PostDevAI: cd PostDevAi && ./target/release/dragon_node"
     echo "   - CLI Panda: cli-panda --help"

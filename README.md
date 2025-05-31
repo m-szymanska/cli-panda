@@ -5,7 +5,7 @@ An AI-powered terminal ecosystem that brings intelligent command-line help, smar
 ## 🚀 Quick Install
 
 ```bash
-curl -LsSf https://raw.githubusercontent.com/LibraxisAI/cli-panda/main/install.sh | sh
+curl -LsSf https://raw.githubusercontent.com/m-szymanska/cli-panda/main/install.sh | sh
 ```
 
 Then follow the instructions to complete setup. For beginners, see [INSTALL_FOR_HUMANS.md](INSTALL_FOR_HUMANS.md).
@@ -22,6 +22,9 @@ The main interactive terminal with inline AI assistance.
 - **Tech**: TypeScript, Node.js, LM Studio SDK
 - **Features**: 
   - Inline AI help with `??` trigger
+  - **NEW:** Execute commands with `!command`
+  - **NEW:** File analysis with `?? analyze file.js`
+  - **NEW:** Git integration with `?? git status`
   - Smart command autocomplete
   - Command explanations before execution
   - ZSH integration
@@ -74,7 +77,7 @@ Distributed RAM-Lake memory architecture for persistent AI context.
 
 #### 1. Clone the repository
 ```bash
-git clone https://github.com/LibraxisAI/cli-panda.git
+git clone https://github.com/m-szymanska/cli-panda.git
 cd cli-panda
 ```
 
@@ -111,23 +114,35 @@ uv sync  # Python/MLX components
 
 ## 🎯 Usage Examples
 
-### AI Terminal
+### AI Terminal - Enhanced Capabilities ✨
 ```bash
 # Start interactive AI terminal
 ai
 
-# Get inline help
+# 💬 Get inline AI help
 ?? how to find large files
+?? what does this error mean
 
-# Explain a command
+# 🚀 Execute commands directly (NEW!)
+!ls -la
+!git status
+!npm install
+
+# 📄 Analyze files with AI (NEW!)
+?? analyze package.json
+?? read src/index.ts
+?? list files
+?? files for debugging
+
+# 🔧 Git integration (NEW!)
+?? git status
+?? git recommendations
+?? generate commit message
+
+# 🎯 Classic commands
 ai explain "find . -name '*.log' -mtime +30 -delete"
-
-# Run with explanation
 ai-run "docker system prune -a"
-
-# Fix last command error
-ai-fix
-wtf  # alias for ai-fix
+ai-fix  # or wtf - fix last command error
 ```
 
 ### RAG System (LBRXCHAT)

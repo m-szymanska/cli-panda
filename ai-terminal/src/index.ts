@@ -8,6 +8,7 @@ import * as pty from 'node-pty';
 import chalk from 'chalk';
 import figlet from 'figlet';
 import { platform } from 'os';
+import { spawn } from 'child_process';
 
 class AITerminal {
   private screen: blessed.Widgets.Screen;
@@ -56,7 +57,7 @@ class AITerminal {
       left: 0,
       width: '100%',
       height: 1,
-      content: ' AI Terminal | ?? for help | Connected to LM Studio',
+      content: ' AI Terminal | ?? for help | !command to execute | Connected to LM Studio',
       style: {
         bg: 'blue',
         fg: 'white',
@@ -111,13 +112,13 @@ class AITerminal {
       this.inlineAI = new InlineAI(this.lmStudio);
       this.autocomplete = new SmartAutocomplete(this.lmStudio);
       
-      this.updateStatus(' AI Terminal | ?? for help | ✓ Connected to LM Studio');
+      this.updateStatus(' AI Terminal | ?? for help | !command to execute | ✓ Connected to LM Studio');
       
       this.lmStudio.on('error', (error) => {
         this.updateStatus(` AI Terminal | ?? for help | ✗ Error: ${error.message}`);
       });
     } catch (error) {
-      this.updateStatus(' AI Terminal | ?? for help | ✗ Failed to connect to LM Studio');
+      this.updateStatus(' AI Terminal | ?? for help | !command to execute | ✗ Failed to connect to LM Studio');
       console.error('Failed to connect to LM Studio:', error);
     }
   }
@@ -145,7 +146,7 @@ class AITerminal {
     splash.setContent(
       chalk.cyan(logo) + '\n\n' +
       chalk.white('Connecting to LM Studio...\n\n') +
-      chalk.gray('Press ?? at any time for AI assistance')
+      chalk.gray('Press ?? for AI help | !command to execute commands')
     );
 
     this.screen.render();
@@ -182,15 +183,89 @@ class AITerminal {
       return;
     }
 
-    // Pass through to PTY
-    this.ptyProcess.write(data);
-
-    // Track command history
+    // Check for command execution trigger (!command)
     if (data === '\r' || data === '\n') {
-      if (this.currentInput.trim()) {
-        this.commandHistory.push(this.currentInput.trim());
+      const command = this.currentInput.trim();
+      
+      if (command.startsWith('!') && command.length > 1) {
+        await this.executeCommand(command.substring(1));
+        this.currentInput = '';
+        return;
+      }
+
+      // Track command history
+      if (command) {
+        this.commandHistory.push(command);
       }
       this.currentInput = '';
+    }
+
+    // Pass through to PTY
+    this.ptyProcess.write(data);
+  }
+
+  private async executeCommand(command: string): Promise<void> {
+    // Security check - dangerous commands blacklist
+    const dangerousCommands = [
+      'rm -rf /', 'sudo rm', 'mkfs', 'fdisk', 'dd if=', 
+      'format', ':(){ :|:& };:', 'sudo shutdown', 'sudo reboot',
+      'sudo passwd', 'sudo userdel', 'chmod 777 /'
+    ];
+
+    const isBlacklisted = dangerousCommands.some(dangerous => 
+      command.toLowerCase().includes(dangerous.toLowerCase())
+    );
+
+    if (isBlacklisted) {
+      this.terminal.write(chalk.red('\n🚫 Command blocked for security reasons\n'));
+      this.ptyProcess.write('\n$ ');
+      return;
+    }
+
+    // Show command being executed
+    this.terminal.write(chalk.cyan(`\n🤖 Executing: ${command}\n`));
+    
+    // Split command into parts for proper execution
+    const parts = command.trim().split(' ');
+    const cmd = parts[0];
+    const args = parts.slice(1);
+
+    try {
+      const childProcess = spawn(cmd, args, {
+        cwd: process.cwd(),
+        env: process.env,
+        stdio: ['pipe', 'pipe', 'pipe']
+      });
+
+      // Handle stdout
+      childProcess.stdout.on('data', (data) => {
+        this.terminal.write(data.toString());
+      });
+
+      // Handle stderr
+      childProcess.stderr.on('data', (data) => {
+        this.terminal.write(chalk.red(data.toString()));
+      });
+
+      // Handle completion
+      childProcess.on('close', (code) => {
+        if (code === 0) {
+          this.terminal.write(chalk.green(`\n✅ Command completed successfully\n`));
+        } else {
+          this.terminal.write(chalk.red(`\n❌ Command failed with exit code ${code}\n`));
+        }
+        this.ptyProcess.write('\n$ ');
+      });
+
+      // Handle errors
+      childProcess.on('error', (error) => {
+        this.terminal.write(chalk.red(`\n❌ Error executing command: ${error.message}\n`));
+        this.ptyProcess.write('\n$ ');
+      });
+
+    } catch (error) {
+      this.terminal.write(chalk.red(`\n❌ Failed to execute command: ${error.message}\n`));
+      this.ptyProcess.write('\n$ ');
     }
   }
 
