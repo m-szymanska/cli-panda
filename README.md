@@ -5,7 +5,7 @@ An AI-powered terminal ecosystem that brings intelligent command-line help, smar
 ## 🚀 Quick Install
 
 ```bash
-curl -LsSf https://raw.githubusercontent.com/LibraxisAI/cli-panda/main/install.sh | sh
+curl -LsSf https://raw.githubusercontent.com/m-szymanska/cli-panda/main/install.sh | sh
 ```
 
 Then follow the instructions to complete setup. For beginners, see [INSTALL_FOR_HUMANS.md](INSTALL_FOR_HUMANS.md).
@@ -25,7 +25,6 @@ The main interactive terminal with inline AI assistance.
   - Smart command autocomplete
   - Command explanations before execution
   - ZSH integration
-  - Warp terminal support
   - 40k token context window
 
 ### 2. LBRXCHAT (Python/MLX)
