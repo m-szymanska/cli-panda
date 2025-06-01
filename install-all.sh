@@ -5,6 +5,9 @@
 
 set -euo pipefail
 
+# Check for auto mode from environment
+AUTO_MODE="${CLI_PANDA_AUTO_INSTALL:-false}"
+
 # Colors
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -197,7 +200,12 @@ install_ai_terminal() {
     
     # Make installer executable and run
     chmod +x install.sh
-    ./install.sh
+    if [ "$AUTO_MODE" = "true" ]; then
+        # Run with auto responses
+        echo "Y" | ./install.sh
+    else
+        ./install.sh
+    fi
     
     cd ..
     success "AI Terminal installed"

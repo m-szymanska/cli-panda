@@ -133,7 +133,7 @@ install_deps() {
 check_shell() {
     echo -e "\n${BLUE}Checking shell configuration...${NC}"
     
-    if [ -z "$ZSH_VERSION" ] && [ "$SHELL" != *"zsh"* ]; then
+    if [ -z "${ZSH_VERSION:-}" ] && [[ "${SHELL:-}" != *"zsh"* ]]; then
         echo -e "${YELLOW}⚠️  ZSH not detected${NC}"
         echo -e "CLI Panda works best with ZSH shell."
         echo -e "\nTo install ZSH:"
@@ -261,7 +261,7 @@ EOF
 main() {
     # Check for dry-run flag
     DRY_RUN=false
-    if [[ "$1" == "--dry-run" ]]; then
+    if [[ "${1:-}" == "--dry-run" ]]; then
         DRY_RUN=true
         echo -e "${BLUE}🏃 Running in DRY-RUN mode (no changes will be made)${NC}\n"
     fi
